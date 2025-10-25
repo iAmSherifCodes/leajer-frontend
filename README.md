@@ -2,9 +2,6 @@
 
 A modern request management system built with Next.js, TypeScript, and Tailwind CSS. Leajer helps teams track and manage requests with an intuitive interface and powerful features.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/OsPjjA0JrNt)
-
 ## Features
 
 - 🔐 **Authentication System** - Secure user login and registration
