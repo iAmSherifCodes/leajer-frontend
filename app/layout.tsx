@@ -10,7 +10,6 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Leajer - Retailer Request Management",
   description: "Manage retailer requests efficiently with Leajer",
-  generator: "v0.app",
   icons: {
     icon: "/favicon.svg",
     apple: "/favicon.svg",
