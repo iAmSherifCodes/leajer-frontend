@@ -14,11 +14,7 @@ export interface RetailerRequest {
   description: string
   uniqueId?: string
   status: "requested" | "returned" | "paid"
-  attendedBy?: {
-    id: string
-    name: string
-    role: UserRole
-  }
+  attendedBy?: string
   createdAt: string
   updatedAt: string
 }
