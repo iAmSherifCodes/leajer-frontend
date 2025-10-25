@@ -151,7 +151,7 @@ export function RequestGrid({
                   </p>
                   {request.attendedBy && (
                     <p className="text-xs bg-primary/10 text-primary px-2 py-1 rounded w-fit">
-                      {typeof request.attendedBy === 'string' ? request.attendedBy : request.attendedBy.name}
+                      {request.attendedBy}
                     </p>
                   )}
                 </div>
