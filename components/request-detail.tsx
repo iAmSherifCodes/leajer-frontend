@@ -67,8 +67,8 @@ export function RequestDetail({ request, onClose }: RequestDetailProps) {
           {request.attendedBy && (
             <div className="bg-muted/50 p-3 rounded-lg">
               <p className="text-sm text-muted-foreground">Attended By</p>
-              <p className="font-semibold">{request.attendedBy.name}</p>
-              <p className="text-xs text-muted-foreground capitalize">{request.attendedBy.role}</p>
+              <p className="font-semibold">{request.attendedBy}</p>
+              <p className="text-xs text-muted-foreground capitalize">role: {request.attendedBy}</p>
             </div>
           )}
 
