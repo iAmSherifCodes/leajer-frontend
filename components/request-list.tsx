@@ -109,7 +109,7 @@ export function RequestList({
                     {request.uniqueId && <p className="text-xs text-muted-foreground">ID: {request.uniqueId}</p>}
                     {request.attendedBy && (
                       <p className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
-                        Attended by: {request.attendedBy.name}
+                        Attended by: {request.attendedBy}
                       </p>
                     )}
                   </div>
