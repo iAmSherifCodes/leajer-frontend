@@ -1,7 +1,7 @@
 import type { RetailerRequest } from "@/types"
 
 // Mock API base URL - replace with your actual API endpoint
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://7lv4bbere7.execute-api.us-east-1.amazonaws.com/dev"
+const API_BASE_URL = process.env.BASE_API_URL
 
 // Mock data storage for demonstration
 // let mockRequests: RetailerRequest[] = [
