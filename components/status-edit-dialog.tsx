@@ -43,7 +43,7 @@ export function StatusEditDialog({ request, onClose, onSave, isLoading = false }
 
             <div className="space-y-2">
               <label className="text-sm font-medium">Status</label>
-              <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+              <Select value={selectedStatus} onValueChange={(value) => setSelectedStatus(value as "requested" | "returned" | "paid")}>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
