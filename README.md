@@ -97,7 +97,7 @@ leajer-app/
 
 ## Deployment
 
-The application is automatically deployed to Vercel. Any changes pushed to the main branch will trigger a new deployment.
+The application is deployed to AWS Amplify. Any changes pushed to the main branch will trigger a new deployment.
 
 **Live Demo**: [https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build](https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build)
 
