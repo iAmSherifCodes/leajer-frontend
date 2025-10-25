@@ -13,7 +13,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 interface RequestFormProps {
   request?: RetailerRequest
-  onSubmit: (data: Omit<RetailerRequest, "id" | "createdAt" | "updatedAt">) => Promise<void>
+  onSubmit: (data: {
+    retailerName: string;
+    productName: string;
+    description: string;
+    uniqueId: string;
+    attendedBy: string;
+  }) => Promise<void>
   onClose: () => void
   isLoading?: boolean
 }
