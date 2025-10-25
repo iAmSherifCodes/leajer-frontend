@@ -1,32 +1,117 @@
-# Leajer application build
+# Leajer Application
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+A modern request management system built with Next.js, TypeScript, and Tailwind CSS. Leajer helps teams track and manage requests with an intuitive interface and powerful features.
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build)
 [![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/projects/OsPjjA0JrNt)
 
-## Overview
+## Features
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+- 🔐 **Authentication System** - Secure user login and registration
+- 📋 **Request Management** - Create, view, edit, and delete requests
+- 📊 **Dashboard** - Overview of all requests with filtering and search
+- 📱 **Responsive Design** - Works seamlessly on desktop and mobile
+- 🎨 **Modern UI** - Built with shadcn/ui components and Tailwind CSS
+- 🌙 **Dark Mode** - Toggle between light and dark themes
+
+## Tech Stack
+
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn/ui
+- **State Management**: React Context
+- **Form Handling**: React Hook Form
+- **Icons**: Lucide React
+- **Charts**: Recharts
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ 
+- npm, yarn, or pnpm
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/iAmSherifCodes/leajer-frontend.git
+   cd leajer-frontend
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm dev
+   ```
+
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Project Structure
+
+```
+leajer-app/
+├── app/                    # Next.js app directory
+│   ├── dashboard/         # Dashboard pages
+│   ├── signup/           # Registration page
+│   ├── layout.tsx        # Root layout
+│   └── page.tsx          # Home page
+├── components/            # React components
+│   ├── ui/               # shadcn/ui components
+│   ├── forms/            # Form components
+│   └── ...               # Other components
+├── context/              # React context providers
+├── hooks/                # Custom React hooks
+├── lib/                  # Utility functions
+├── services/             # API service layer
+├── styles/               # Global styles
+├── types/                # TypeScript type definitions
+└── public/               # Static assets
+```
+
+## Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript compiler
 
 ## Deployment
 
-Your project is live at:
+The application is automatically deployed to Vercel. Any changes pushed to the main branch will trigger a new deployment.
 
-**[https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build](https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build)**
+**Live Demo**: [https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build](https://vercel.com/iamsherifcodes-projects/v0-leajer-application-build)
 
-## Build your app
+## Contributing
 
-Continue building your app on:
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-**[https://v0.app/chat/projects/OsPjjA0JrNt](https://v0.app/chat/projects/OsPjjA0JrNt)**
+## License
 
-## How It Works
-
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
-# leajer-frontend
-# leajer-frontend
+This project is licensed under the MIT License.
