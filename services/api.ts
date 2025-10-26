@@ -1,7 +1,7 @@
 import type { RetailerRequest } from "@/types"
 
-// Mock API base URL - replace with your actual API endpoint
-const API_BASE_URL = process.env.BASE_API_URL
+// API base URL from environment variables
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
 export const authAPI = {
   signup: async (
