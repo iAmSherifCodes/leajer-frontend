@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { AuthProvider } from "@/context/auth-context"
+import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
 const _geist = Geist({ subsets: ["latin"] })
@@ -25,6 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans antialiased`}>
         <AuthProvider>{children}</AuthProvider>
+        <Toaster />
       </body>
     </html>
   )
