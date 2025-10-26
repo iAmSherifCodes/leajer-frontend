@@ -15,6 +15,7 @@ import { requestsAPI } from "@/services/api"
 import type { RetailerRequest } from "@/types"
 import { Plus, Search, Package, CheckCircle2, RotateCcw, List, Grid3x3 } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { showToast } from '@/lib/toast'
 
 type ViewType = "list" | "grid"
 
@@ -62,8 +63,10 @@ export default function Dashboard() {
       setIsLoadingRequests(true)
       const data = await requestsAPI.getAll()
       setRequests(data)
+
     } catch (error) {
       console.error("Failed to load requests:", error)
+      showToast.error('Failed to load requests. Please try again.')
     } finally {
       setIsLoadingRequests(false)
     }
@@ -78,16 +81,13 @@ export default function Dashboard() {
   }) => {
     setIsSaving(true)
     try {
-      if (editingRequest) {
-        // For updates, we only send status, so this shouldn't be called for edits
-        console.error("Edit should use handleStatusUpdate instead")
-      } else {
-        const created = await requestsAPI.create(data)
-        setRequests([created, ...requests])
-      }
+      const created = await requestsAPI.create(data)
+      setRequests([created, ...requests])
+      showToast.success('Request saved successfully')
       setIsFormOpen(false)
     } catch (error) {
       console.error("Failed to save request:", error)
+      showToast.error('Failed to save request. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -98,8 +98,10 @@ export default function Dashboard() {
       setIsSaving(true)
       await requestsAPI.delete(id)
       setRequests(requests.filter((r) => r.id !== id))
+      showToast.success('Request deleted successfully')
     } catch (error) {
       console.error("Failed to delete request:", error)
+      showToast.error('Failed to delete request. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -115,8 +117,10 @@ export default function Dashboard() {
         })
         setRequests(requests.map((r) => (r.id === updated.id ? updated : r)))
       }
+      showToast.success('Status updated successfully')
     } catch (error) {
       console.error("Failed to update status:", error)
+      showToast.error('Failed to update status. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -252,7 +256,7 @@ export default function Dashboard() {
                   </div>
                   {hasPermission("create_request") && (
                     <Button
-                    size="sm"
+                      size="sm"
                       onClick={() => {
                         setEditingRequest(undefined)
                         setIsFormOpen(true)

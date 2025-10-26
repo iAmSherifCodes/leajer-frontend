@@ -4,6 +4,7 @@ import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 import type { User, AuthContextType, UserRole, Permission } from "@/types"
 import { rolePermissions } from "@/types"
+import { showToast } from '@/lib/toast'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -36,9 +37,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       setUser(mockUser)
+      showToast.success("Login successful")
       localStorage.setItem("leajer_user", JSON.stringify(mockUser))
     } catch (error) {
       console.error("Login failed:", error)
+      showToast.error("Login failed. Please check your credentials.")
       throw error
     } finally {
       setIsLoading(false)
@@ -49,6 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       if (password !== confirmPassword) {
+        showToast.error("Passwords do not match")
         throw new Error("Passwords do not match")
       }
 
@@ -68,9 +72,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       setUser(mockUser)
+      showToast.success("Signup successful")
       localStorage.setItem("leajer_user", JSON.stringify(mockUser))
     } catch (error) {
       console.error("Signup failed:", error)
+      showToast.error("Signup failed. Please try again.")
       throw error
     } finally {
       setIsLoading(false)
