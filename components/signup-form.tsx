@@ -65,7 +65,7 @@ export function SignupForm() {
 
     try {
       await signup(email, password, name, confirmPassword)
-      router.push("/dashboard")
+      router.push(`/verify?email=${encodeURIComponent(email)}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Signup failed. Please try again.")
       console.error(err)
