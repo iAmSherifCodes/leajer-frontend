@@ -27,8 +27,8 @@ export function SignupForm() {
       return false
     }
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters")
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters")
       return false
     }
 
@@ -127,7 +127,7 @@ export function SignupForm() {
                 disabled={isLoading}
                 className="transition-colors"
               />
-              <p className="text-xs text-muted-foreground">At least 6 characters</p>
+              <p className="text-xs text-muted-foreground">At least 8 characters</p>
             </div>
 
             <div className="space-y-2">
