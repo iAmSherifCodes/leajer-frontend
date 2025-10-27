@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -11,7 +11,7 @@ import { cognitoAuth } from '@/lib/cognito'
 import { Mail, ArrowLeft, RefreshCw } from 'lucide-react'
 import Link from 'next/link'
 
-export default function VerifyPage() {
+function VerifyContent() {
   const [code, setCode] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isResending, setIsResending] = useState(false)
@@ -28,11 +28,14 @@ export default function VerifyPage() {
 
     setIsLoading(true)
     try {
+      console.log('Verifying with email:', email, 'code:', code)
       await cognitoAuth.confirmSignUp(email, code)
       showToast.success('Email verified successfully!')
       router.push('/')
-    } catch (error) {
-      showToast.error('Invalid verification code. Please try again.')
+    } catch (error: any) {
+      console.error('Verification error:', error)
+      const errorMessage = error.message || 'Invalid verification code. Please try again.'
+      showToast.error(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -41,10 +44,13 @@ export default function VerifyPage() {
   const handleResendCode = async () => {
     setIsResending(true)
     try {
+      console.log('Resending code to:', email)
       await cognitoAuth.resendCode(email)
       showToast.success('Verification code sent!')
-    } catch (error) {
-      showToast.error('Failed to resend code. Please try again.')
+    } catch (error: any) {
+      console.error('Resend error:', error)
+      const errorMessage = error.message || 'Failed to resend code. Please try again.'
+      showToast.error(errorMessage)
     } finally {
       setIsResending(false)
     }
@@ -122,5 +128,13 @@ export default function VerifyPage() {
         </CardContent>
       </Card>
     </div>
+  )
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="text-center"><div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div><p className="text-muted-foreground">Loading...</p></div></div>}>
+      <VerifyContent />
+    </Suspense>
   )
 }
