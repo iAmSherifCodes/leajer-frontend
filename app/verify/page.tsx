@@ -28,11 +28,14 @@ export default function VerifyPage() {
 
     setIsLoading(true)
     try {
+      console.log('Verifying with email:', email, 'code:', code)
       await cognitoAuth.confirmSignUp(email, code)
       showToast.success('Email verified successfully!')
       router.push('/')
-    } catch (error) {
-      showToast.error('Invalid verification code. Please try again.')
+    } catch (error: any) {
+      console.error('Verification error:', error)
+      const errorMessage = error.message || 'Invalid verification code. Please try again.'
+      showToast.error(errorMessage)
     } finally {
       setIsLoading(false)
     }
@@ -41,10 +44,13 @@ export default function VerifyPage() {
   const handleResendCode = async () => {
     setIsResending(true)
     try {
+      console.log('Resending code to:', email)
       await cognitoAuth.resendCode(email)
       showToast.success('Verification code sent!')
-    } catch (error) {
-      showToast.error('Failed to resend code. Please try again.')
+    } catch (error: any) {
+      console.error('Resend error:', error)
+      const errorMessage = error.message || 'Failed to resend code. Please try again.'
+      showToast.error(errorMessage)
     } finally {
       setIsResending(false)
     }
