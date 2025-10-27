@@ -5,6 +5,7 @@ import { createContext, useContext, useState, useEffect } from "react"
 import type { User, AuthContextType, UserRole, Permission } from "@/types"
 import { rolePermissions } from "@/types"
 import { showToast } from '@/lib/toast'
+import { cognitoAuth } from '@/lib/cognito'
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -28,17 +29,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = async (email: string, password: string, role: UserRole) => {
     setIsLoading(true)
     try {
-      // Mock API call - replace with actual authentication
-      const mockUser: User = {
-        id: `user_${Date.now()}`,
-        name: email.split("@")[0],
+      const result = await cognitoAuth.signIn(email, password)
+      const cognitoUser = await cognitoAuth.getCurrentUser()
+      
+      const user: User = {
+        id: cognitoUser.userId,
+        name: cognitoUser.signInDetails?.loginId?.split('@')[0] || email.split('@')[0],
         email,
         role,
       }
 
-      setUser(mockUser)
+      setUser(user)
       showToast.success("Login successful")
-      localStorage.setItem("leajer_user", JSON.stringify(mockUser))
+      localStorage.setItem("leajer_user", JSON.stringify(user))
     } catch (error) {
       console.error("Login failed:", error)
       showToast.error("Login failed. Please check your credentials.")
@@ -52,28 +55,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
     try {
       if (password !== confirmPassword) {
-        showToast.error("Passwords do not match")
-        throw new Error("Passwords do not match")
+        const message = "Passwords do not match"
+        showToast.error(message)
+        throw new Error(message)
       }
 
-      // Mock API call - replace with actual signup endpoint
-      // const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password, name }),
-      // });
-      // const data = await response.json();
-
-      const mockUser: User = {
-        id: `user_${Date.now()}`,
-        name,
-        email,
-        role: "salesperson", // Salesperson signup only
-      }
-
-      setUser(mockUser)
-      showToast.success("Signup successful")
-      localStorage.setItem("leajer_user", JSON.stringify(mockUser))
+      await cognitoAuth.signUp(email, password, name)
+      showToast.success("Signup successful! Please check your email for verification code.")
     } catch (error) {
       console.error("Signup failed:", error)
       showToast.error("Signup failed. Please try again.")
@@ -83,9 +71,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const logout = () => {
-    setUser(null)
-    localStorage.removeItem("leajer_user")
+  const logout = async () => {
+    try {
+      await cognitoAuth.signOut()
+      setUser(null)
+      localStorage.removeItem("leajer_user")
+    } catch (error) {
+      console.error("Logout failed:", error)
+    }
   }
 
   return <AuthContext.Provider value={{ user, isLoading, login, logout, signup }}>{children}</AuthContext.Provider>
@@ -101,20 +94,31 @@ export function useAuth() {
 
 export function usePermission() {
   const { user } = useAuth()
+  const role = (user: User) => {
+    // if name contails admin then the user is admin
+    if (user.name.includes("admin") || user.name.includes("Admin") || user.name.includes("ADMIN")) {
+      user.role = "owner"
+    } else { user.role = "salesperson" }
+    return user.role
+  }
 
   const hasPermission = (permission: Permission): boolean => {
     if (!user) return false
-    return rolePermissions[user.role].includes(permission)
+    const userRole = role(user)
+    return rolePermissions[userRole].includes(permission)
   }
 
   const hasAnyPermission = (permissions: Permission[]): boolean => {
     if (!user) return false
-    return permissions.some((p) => rolePermissions[user.role].includes(p))
+    const userRole = role(user)
+    return permissions.some((p) => rolePermissions[userRole
+    ].includes(p))
   }
 
   const hasAllPermissions = (permissions: Permission[]): boolean => {
     if (!user) return false
-    return permissions.every((p) => rolePermissions[user.role].includes(p))
+    const userRole = role(user)
+    return permissions.every((p) => rolePermissions[userRole].includes(p))
   }
 
   return { hasPermission, hasAnyPermission, hasAllPermissions, userRole: user?.role }

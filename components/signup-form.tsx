@@ -32,6 +32,14 @@ export function SignupForm() {
       return false
     }
 
+    const uppercaseRegex = /[A-Z]/
+    const lowercaseRegex = /[a-z]/
+    const numberRegex = /[0-9]/
+    if (!uppercaseRegex.test(password) || !lowercaseRegex.test(password) || !numberRegex.test(password)) {
+      setError("Password must contain uppercase, lowercase, and number")
+      return false
+    }
+
     if (password !== confirmPassword) {
       setError("Passwords do not match")
       return false
