@@ -36,16 +36,32 @@ export const cognitoAuth = {
   },
 
   confirmSignUp: async (email: string, code: string) => {
-    return await confirmSignUp({
-      username: email,
-      confirmationCode: code,
-    })
+    try {
+      console.log('Confirming signup for:', email, 'with code:', code)
+      const result = await confirmSignUp({
+        username: email,
+        confirmationCode: code,
+      })
+      console.log('Confirmation result:', result)
+      return result
+    } catch (error) {
+      console.error('Cognito confirmSignUp error:', error)
+      throw error
+    }
   },
 
   resendCode: async (email: string) => {
-    return await resendSignUpCode({
-      username: email,
-    })
+    try {
+      console.log('Resending code for:', email)
+      const result = await resendSignUpCode({
+        username: email,
+      })
+      console.log('Resend result:', result)
+      return result
+    } catch (error) {
+      console.error('Cognito resendCode error:', error)
+      throw error
+    }
   },
 
   signOut: async () => {
