@@ -3,6 +3,15 @@ import type { RetailerRequest } from "@/types"
 // API base URL from environment variables
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
+// Helper function to get auth headers
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('leajer_token')
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': `Bearer ${token}` })
+  }
+}
+
 export const authAPI = {
   signup: async (
     email: string,
@@ -44,7 +53,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
       });
       return response.json();
     } catch (error) {
@@ -58,7 +67,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request/${id}`,{
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
   });
       return response.json();
     } catch (error) {
@@ -78,7 +87,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(data),
       });
       return response.json();
@@ -95,7 +104,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(data),
       });
       return response.json();
@@ -110,7 +119,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request/${id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
       });
     } catch (error) {
       console.error("Failed to delete request:", error)
