@@ -8,7 +8,7 @@ const getAuthHeaders = () => {
   const token = localStorage.getItem('leajer_token')
   return {
     'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` })
+    ...(token && { 'Authorization': token })
   }
 }
 
