@@ -94,7 +94,7 @@ export function RequestList({
                 <div className="flex-1 space-y-2 cursor-pointer" onClick={() => onView(request)}>
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-lg text-balance group-hover:text-primary transition-colors">
-                      {request.retailerName}
+                      {request.productName}
                     </h3>
                     <Badge
                       variant={request.status === "requested" ? "default" : "secondary"}
@@ -103,8 +103,8 @@ export function RequestList({
                       {request.status}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground">{request.productName}</p>
-                  <p className="text-sm text-foreground line-clamp-2">{request.description}</p>
+                  <p className="text-sm text-muted-foreground">{request.description}</p>
+                  <p className="text-sm text-foreground line-clamp-2">{request.retailerName}</p>
                   <div className="flex items-center gap-2 flex-wrap pt-1">
                     {request.uniqueId && <p className="text-xs text-muted-foreground">ID: {request.uniqueId}</p>}
                     {request.attendedBy && (
