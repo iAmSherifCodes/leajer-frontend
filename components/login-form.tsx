@@ -9,7 +9,6 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { AlertCircle, Shield, Users } from "lucide-react"
 import { Logo } from "./logo"
 
@@ -89,32 +88,6 @@ export function LoginForm() {
               />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Role</label>
-              <Select
-                value={role}
-                onValueChange={(value) => setRole(value as "owner" | "salesperson")}
-                disabled={isLoading}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="owner">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4" />
-                      <span>Owner</span>
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="salesperson">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4" />
-                      <span>Salesperson</span>
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
 
             <Button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" disabled={isLoading}>
               {isLoading ? "Signing in..." : "Sign In"}
@@ -135,9 +108,7 @@ export function LoginForm() {
               </Button>
             </Link>
 
-            <p className="text-xs text-muted-foreground text-center">
-              Demo credentials: any email/password combination works
-            </p>
+           
           </form>
         </CardContent>
       </Card>
