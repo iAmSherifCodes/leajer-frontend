@@ -27,7 +27,6 @@ export const cognitoAuth = {
         userAttributes: {
           email,
           name,
-          'custom:role': 'salesperson',
         },
       },
     })
@@ -43,7 +42,6 @@ export const cognitoAuth = {
         userAttributes: {
           email,
           name,
-          'custom:role': 'owner',
         },
       },
     })
