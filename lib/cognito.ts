@@ -79,11 +79,11 @@ export const cognitoAuth = {
   addUserToGroup: async (username: string, role?: string) => {
     try {
       const client = new CognitoIdentityProviderClient({
-        region: process.env.NEXT_PUBLIC_AWS_REGION
-        // credentials: {
-        //   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
-        //   secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
-        // },
+        region: process.env.NEXT_PUBLIC_AWS_REGION,
+        credentials: {
+          accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
+        },
       })
 
       // Determine group based on role or username pattern
@@ -99,7 +99,7 @@ export const cognitoAuth = {
       console.log(`User ${username} added to group ${groupName}`)
     } catch (error) {
       console.error('Failed to add user to group:', error)
-      // Don't throw error to avoid breaking the confirmation flow
+      // Not throwing error to avoid breaking the confirmation flow
     }
   },
 
@@ -132,11 +132,11 @@ export const cognitoAuth = {
   getUserRole: async (username: string): Promise<'owner' | 'salesperson'> => {
     try {
       const client = new CognitoIdentityProviderClient({
-        region: process.env.NEXT_PUBLIC_AWS_REGION
-        // credentials: {
-        //   accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
-        //   secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
-        // },
+        region: process.env.NEXT_PUBLIC_AWS_REGION,
+        credentials: {
+          accessKeyId: process.env.NEXT_PUBLIC_AWS_ACCESS_KEY_ID!,
+          secretAccessKey: process.env.NEXT_PUBLIC_AWS_SECRET_ACCESS_KEY!,
+        },
       })
 
       const command = new AdminListGroupsForUserCommand({
