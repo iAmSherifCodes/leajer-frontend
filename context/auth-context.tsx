@@ -31,12 +31,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const result = await cognitoAuth.signIn(email, password)
       const cognitoUser = await cognitoAuth.getCurrentUser()
+      const session = await cognitoAuth.getCurrentSession()
+
+      if (!cognitoUser) {
+        throw new Error("Failed to retrieve user after login")
+      }
       
+      if (!result.isSignedIn){
+        throw new Error("Login failed")
+      }
+      const username = cognitoUser.signInDetails?.loginId?.split('@')[0] || email.split('@')[0]
+      
+      // Get actual role from Cognito groups
+      const actualRole = await cognitoAuth.getUserRole(email)
+
       const user: User = {
         id: cognitoUser.userId,
-        name: cognitoUser.signInDetails?.loginId?.split('@')[0] || email.split('@')[0],
+        name: username,
         email,
-        role,
+        role: actualRole
+      }
+
+      // Store the token for API requests
+      if (session?.tokens?.accessToken) {
+        localStorage.setItem('leajer_token', session.tokens.accessToken.toString())
       }
 
       setUser(user)
@@ -60,11 +78,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(message)
       }
 
-      await cognitoAuth.signUp(email, password, name)
+      await cognitoAuth.signUpSalesperson(email, password, name)
       showToast.success("Signup successful! Please check your email for verification code.")
     } catch (error) {
       console.error("Signup failed:", error)
       showToast.error("Signup failed. Please try again.")
+      throw error
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const ownerSignup = async (email: string, password: string, name: string, confirmPassword: string) => {
+    setIsLoading(true)
+    try {
+      if (password !== confirmPassword) {
+        const message = "Passwords do not match"
+        showToast.error(message)
+        throw new Error(message)
+      }
+
+      await cognitoAuth.signUpOwner(email, password, name)
+      showToast.success("Owner account created! Please check your email for verification code.")
+    } catch (error) {
+      console.error("Owner signup failed:", error)
+      showToast.error("Owner signup failed. Please try again.")
       throw error
     } finally {
       setIsLoading(false)
@@ -76,12 +114,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       await cognitoAuth.signOut()
       setUser(null)
       localStorage.removeItem("leajer_user")
+      localStorage.removeItem("leajer_token")
     } catch (error) {
       console.error("Logout failed:", error)
     }
   }
 
-  return <AuthContext.Provider value={{ user, isLoading, login, logout, signup }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, isLoading, login, logout, signup, ownerSignup }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
@@ -94,31 +133,20 @@ export function useAuth() {
 
 export function usePermission() {
   const { user } = useAuth()
-  const role = (user: User) => {
-    // if name contails admin then the user is admin
-    if (user.name.includes("admin") || user.name.includes("Admin") || user.name.includes("ADMIN")) {
-      user.role = "owner"
-    } else { user.role = "salesperson" }
-    return user.role
-  }
 
   const hasPermission = (permission: Permission): boolean => {
     if (!user) return false
-    const userRole = role(user)
-    return rolePermissions[userRole].includes(permission)
+    return rolePermissions[user.role].includes(permission)
   }
 
   const hasAnyPermission = (permissions: Permission[]): boolean => {
     if (!user) return false
-    const userRole = role(user)
-    return permissions.some((p) => rolePermissions[userRole
-    ].includes(p))
+    return permissions.some((p) => rolePermissions[user.role].includes(p))
   }
 
   const hasAllPermissions = (permissions: Permission[]): boolean => {
     if (!user) return false
-    const userRole = role(user)
-    return permissions.every((p) => rolePermissions[userRole].includes(p))
+    return permissions.every((p) => rolePermissions[user.role].includes(p))
   }
 
   return { hasPermission, hasAnyPermission, hasAllPermissions, userRole: user?.role }
