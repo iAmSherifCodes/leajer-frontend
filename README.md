@@ -1,33 +1,49 @@
-# Leajer Application
+# Leajer
 
-A modern request management system built with Next.js, TypeScript, and Tailwind CSS. Leajer helps teams track and manage requests with an intuitive interface and powerful features.
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://leajer.d3rgwmm3at09rc.amplifyapp.com/)
+[![React](https://img.shields.io/badge/React-19-61dafb)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8)](https://tailwindcss.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Features
+A modern, full-featured request management system that helps businesses efficiently track, organize, and manage requests with an intuitive interface and powerful features.
 
-- 🔐 **Authentication System** - Secure user login and registration
-- 📋 **Request Management** - Create, view, edit, and delete requests
-- 📊 **Dashboard** - Overview of all requests with filtering and search
-- 📱 **Responsive Design** - Works seamlessly on desktop and mobile
-- 🎨 **Modern UI** - Built with shadcn/ui components and Tailwind CSS
-- 🌙 **Dark Mode** - Toggle between light and dark themes
+## ✨ Features
 
-## Tech Stack
+### Core Functionality
+- 🔐 **Secure Authentication** - User registration, login, and session management
+- 📋 **Request Management** - Full CRUD operations for request handling
+- 📊 **Interactive Dashboard** - Real-time overview with advanced filtering and search
+- 📈 **Analytics & Charts** - Visual insights with Recharts integration
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn/ui
-- **State Management**: React Context
-- **Form Handling**: React Hook Form
-- **Icons**: Lucide React
-- **Charts**: Recharts
+### User Experience
+- 📱 **Responsive Design** - Seamless experience across all devices
+- 🎨 **Modern UI/UX** - Clean interface built with shadcn/ui components
+- 🌙 **Dark/Light Mode** - Theme toggle for user preference
+- ⚡ **Fast Performance** - Optimized with the new Next.js 16 App Router
 
-## Getting Started
+## 🛠️ Tech Stack
+
+| Category | Technology |
+|----------|------------|
+| **Framework** | Next.js 16 (App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS |
+| **UI Library** | shadcn/ui |
+| **State Management** | React Context API |
+| **Forms** | React Hook Form |
+| **Icons** | Lucide React |
+| **Charts** | Recharts |
+| **Deployment** | AWS Amplify |
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ 
-- npm, yarn, or pnpm
+Ensure you have the following installed:
+- **Node.js** 18.0 or higher
+- **npm**, **yarn**, or **pnpm**
 
 ### Installation
 
@@ -40,75 +56,64 @@ A modern request management system built with Next.js, TypeScript, and Tailwind 
 2. **Install dependencies**
    ```bash
    npm install
-   # or
-   yarn install
-   # or
-   pnpm install
    ```
 
-3. **Run the development server**
+3. **Start development server**
    ```bash
    npm run dev
-   # or
-   yarn dev
-   # or
-   pnpm dev
    ```
 
-4. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
+4. **View the application**
+   Open [http://localhost:3000](http://localhost:3000) in your browser
 
-### Build for Production
+### Production Build
 
 ```bash
 npm run build
 npm start
 ```
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 leajer-app/
-├── app/                    # Next.js app directory
-│   ├── dashboard/         # Dashboard pages
-│   ├── signup/           # Registration page
-│   ├── layout.tsx        # Root layout
-│   └── page.tsx          # Home page
-├── components/            # React components
-│   ├── ui/               # shadcn/ui components
-│   ├── forms/            # Form components
-│   └── ...               # Other components
-├── context/              # React context providers
+├── app/                    # Next.js App Router directory
+│   ├── dashboard/         # Dashboard pages and components
+│   ├── owner-signup/     # Owner registration flow
+│   ├── signup/           # User registration flow
+│   ├── verify/           # Email verification pages
+│   ├── globals.css       # Global styles
+│   ├── layout.tsx        # Root layout component
+│   └── page.tsx          # Landing page or Sign in page
+├── components/            # Reusable React components
+│   ├── ui/               # shadcn/ui base components
+│   ├── forms/            # Form-specific components
+│   ├── charts/           # Chart components
+│   └── layout/           # Layout components
+├── context/              # React Context providers
 ├── hooks/                # Custom React hooks
-├── lib/                  # Utility functions
+├── lib/                  # Utility functions and configurations
 ├── services/             # API service layer
-├── styles/               # Global styles
 ├── types/                # TypeScript type definitions
-└── public/               # Static assets
+├── public/               # Static assets (images, icons)
+└── styles/               # Additional styling files
 ```
 
-## Available Scripts
+## 📜 Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run type-check` - Run TypeScript compiler
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Create production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint for code quality |
+| `npm run type-check` | Run TypeScript compiler check |
 
-## Deployment
+## 🌐 Deployment
 
-The application is deployed to AWS Amplify. Any changes pushed to the leajer branch will trigger a new deployment.
+The application is automatically deployed to **AWS Amplify** with continuous integration:
 
-**Live Demo**: [https://leajer.d3rgwmm3at09rc.amplifyapp.com/](https://leajer.d3rgwmm3at09rc.amplifyapp.com/)
+- **Live URL**: [https://leajer.d3rgwmm3at09rc.amplifyapp.com/](https://leajer.d3rgwmm3at09rc.amplifyapp.com/)
+- **Auto-deploy**: Pushes to `leajer` branch trigger new deployments
+- **Environment**: Production-ready with optimized builds
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License.
