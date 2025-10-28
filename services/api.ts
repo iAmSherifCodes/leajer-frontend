@@ -12,40 +12,6 @@ const getAuthHeaders = () => {
   }
 }
 
-export const authAPI = {
-  signup: async (
-    email: string,
-    password: string,
-    name: string,
-  ): Promise<{ id: string; name: string; email: string; role: string }> => {
-    try {
-      // Replace with actual API call:
-      // const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password, name }),
-      // });
-      // if (!response.ok) throw new Error('Signup failed');
-      // return response.json();
-
-      // Mock implementation
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            id: `user_${Date.now()}`,
-            name,
-            email,
-            role: "salesperson",
-          })
-        }, 300)
-      })
-    } catch (error) {
-      console.error("Signup failed:", error)
-      throw error
-    }
-  },
-}
-
 // Retailer Requests API
 export const requestsAPI = {
   // Get all requests
