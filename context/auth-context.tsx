@@ -51,10 +51,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         role: actualRole
       }
-
       // Store the token for API requests
-      if (session?.tokens?.accessToken) {
-        localStorage.setItem('leajer_token', session.tokens.accessToken.toString())
+      if (session?.tokens?.idToken) {
+        localStorage.setItem('leajer_token', session.tokens.idToken.toString())
       }
 
       setUser(user)

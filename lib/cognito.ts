@@ -56,7 +56,6 @@ export const cognitoAuth = {
 
   confirmSignUp: async (email: string, code: string) => {
     try {
-      console.log('Confirming signup for:', email, 'with code:', code)
       const result = await confirmSignUp({
         username: email,
         confirmationCode: code,
@@ -128,6 +127,10 @@ export const cognitoAuth = {
   getCurrentSession: async () => {
     return await fetchAuthSession()
   },
+
+  // getCurrentUserSesion: async ()=>{
+  //   return null
+  // },
 
   getUserRole: async (username: string): Promise<'owner' | 'salesperson'> => {
     try {
