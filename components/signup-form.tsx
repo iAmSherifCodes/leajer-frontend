@@ -127,7 +127,7 @@ export function SignupForm() {
                 disabled={isLoading}
                 className="transition-colors"
               />
-              <p className="text-xs text-muted-foreground">At least 8 characters</p>
+              <p className="text-xs text-muted-foreground">At least 8 characters with uppercase, lowercase & number</p>
             </div>
 
             <div className="space-y-2">
