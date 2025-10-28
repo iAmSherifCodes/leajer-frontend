@@ -3,38 +3,13 @@ import type { RetailerRequest } from "@/types"
 // API base URL from environment variables
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL
 
-export const authAPI = {
-  signup: async (
-    email: string,
-    password: string,
-    name: string,
-  ): Promise<{ id: string; name: string; email: string; role: string }> => {
-    try {
-      // Replace with actual API call:
-      // const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email, password, name }),
-      // });
-      // if (!response.ok) throw new Error('Signup failed');
-      // return response.json();
-
-      // Mock implementation
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve({
-            id: `user_${Date.now()}`,
-            name,
-            email,
-            role: "salesperson",
-          })
-        }, 300)
-      })
-    } catch (error) {
-      console.error("Signup failed:", error)
-      throw error
-    }
-  },
+// Helper function to get auth headers
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('leajer_token')
+  return {
+    'Content-Type': 'application/json',
+    ...(token && { 'Authorization': token })
+  }
 }
 
 // Retailer Requests API
@@ -44,7 +19,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
       });
       return response.json();
     } catch (error) {
@@ -58,7 +33,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request/${id}`,{
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
   });
       return response.json();
     } catch (error) {
@@ -78,7 +53,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(data),
       });
       return response.json();
@@ -95,7 +70,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request/${id}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
         body: JSON.stringify(data),
       });
       return response.json();
@@ -110,7 +85,7 @@ export const requestsAPI = {
     try {
       const response = await fetch(`${API_BASE_URL}/request/${id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
+        headers: getAuthHeaders(),
       });
     } catch (error) {
       console.error("Failed to delete request:", error)

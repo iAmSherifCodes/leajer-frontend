@@ -1,52 +1,53 @@
-"use client"
+'use client'
 
-import type React from "react"
-import { useState } from "react"
-import { useAuth } from "@/context/auth-context"
-import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card"
-import { AlertCircle, CheckCircle } from "lucide-react"
-import { Logo } from "./logo"
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
+import { AlertCircle, Crown, CheckCircle } from 'lucide-react'
+import { Logo } from '@/components/logo'
+import { cognitoAuth } from '@/lib/cognito'
+import { showToast } from '@/lib/toast'
 
-export function SignupForm() {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("")
+export default function OwnerSignupPage() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const { signup } = useAuth()
   const router = useRouter()
 
   const validateForm = (): boolean => {
     if (!name || !email || !password || !confirmPassword) {
-      setError("Please fill in all fields")
+      setError('Please fill in all fields')
       return false
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters")
+      setError('Password must be at least 8 characters')
       return false
     }
 
     const uppercaseRegex = /[A-Z]/
     const lowercaseRegex = /[a-z]/
     const numberRegex = /[0-9]/
-    if (!uppercaseRegex.test(password) || !lowercaseRegex.test(password) || !numberRegex.test(password)) {
-      setError("Password must contain uppercase, lowercase, and number")
+    
+    if (!uppercaseRegex.test(password) || !lowercaseRegex.test(password) || 
+        !numberRegex.test(password)) {
+      setError('Password must contain uppercase, lowercase, and number')
       return false
     }
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
+      setError('Passwords do not match')
       return false
     }
 
-    if (!email.includes("@")) {
-      setError("Please enter a valid email address")
+    if (!email.includes('@')) {
+      setError('Please enter a valid email address')
       return false
     }
 
@@ -55,7 +56,7 @@ export function SignupForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setError("")
+    setError('')
 
     if (!validateForm()) {
       return
@@ -64,10 +65,11 @@ export function SignupForm() {
     setIsLoading(true)
 
     try {
-      await signup(email, password, name, confirmPassword)
+      await cognitoAuth.signUpOwner(email, password, `admin-${name}`)
+      showToast.success('Owner account created! Please check your email for verification code.')
       router.push(`/verify?email=${encodeURIComponent(email)}`)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Signup failed. Please try again.")
+    } catch (err: any) {
+      setError(err.message || 'Signup failed. Please try again.')
       console.error(err)
     } finally {
       setIsLoading(false)
@@ -75,14 +77,15 @@ export function SignupForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5 p-4">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-100 dark:from-amber-950/20 dark:to-orange-950/20 p-4">
+      <Card className="w-full max-w-md shadow-lg border-amber-200 dark:border-amber-800">
         <CardHeader className="space-y-2">
           <div className="flex items-center gap-2">
             <Logo />
             <h1 className="text-2xl font-bold">Leajer</h1>
+            <Crown className="w-5 h-5 text-amber-600" />
           </div>
-          <CardDescription>Create your salesperson account</CardDescription>
+          <CardDescription>Create your owner account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -109,7 +112,7 @@ export function SignupForm() {
               <label className="text-sm font-medium">Email</label>
               <Input
                 type="email"
-                placeholder="you@example.com"
+                placeholder="owner@company.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
@@ -142,8 +145,12 @@ export function SignupForm() {
               />
             </div>
 
-            <Button type="submit" className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700" disabled={isLoading}>
-              {isLoading ? "Creating account..." : "Create Account"}
+            <Button 
+              type="submit" 
+              className="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700" 
+              disabled={isLoading}
+            >
+              {isLoading ? 'Creating account...' : 'Create Owner Account'}
             </Button>
 
             <div className="relative">
@@ -161,11 +168,10 @@ export function SignupForm() {
               </Button>
             </Link>
 
-            <div className="flex items-start gap-2 p-3 bg-primary/5 rounded-lg">
-              <CheckCircle className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+            <div className="flex items-start gap-2 p-3 bg-amber-50 dark:bg-amber-950/30 rounded-lg border border-amber-200 dark:border-amber-800">
+              <Crown className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
               <p className="text-xs text-muted-foreground">
-                You will be registered as a <span className="font-semibold text-foreground">Salesperson</span>. Contact
-                your owner to upgrade your account.
+                You will be registered as an <span className="font-semibold text-amber-700 dark:text-amber-400">Owner</span> with full administrative privileges.
               </p>
             </div>
           </form>
