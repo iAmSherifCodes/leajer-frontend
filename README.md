@@ -21,7 +21,11 @@ A modern, full-featured request management system that helps businesses efficien
 - 📱 **Responsive Design** - Seamless experience across all devices
 - 🎨 **Modern UI/UX** - Clean interface built with shadcn/ui components
 - 🌙 **Dark/Light Mode** - Theme toggle for user preference
+<<<<<<< HEAD
 - ⚡ **Fast Performance** - Optimized with the new Next.js 16 App Router
+=======
+- ⚡ **Fast Performance** - Optimized with the latest Next.js 16 App Router
+>>>>>>> ccfb0b6915cbad625dfd3e1cc273eba9ce365d11
 
 ## 🛠️ Tech Stack
 
