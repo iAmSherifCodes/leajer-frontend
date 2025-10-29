@@ -15,41 +15,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      const storedUser = localStorage.getItem("leajer_user")
-      if (storedUser) {
-        try {
-          // Check if Cognito session is still valid
-          await cognitoAuth.getCurrentUser()
-          setUser(JSON.parse(storedUser))
-        } catch (error) {
-          // Token expired or invalid, clear local storage
-          console.log("Token expired, logging out")
-          localStorage.removeItem("leajer_user")
-          localStorage.removeItem("leajer_token")
-          setUser(null)
-        }
+    // Check if user is already logged in (from localStorage)
+    const storedUser = localStorage.getItem("leajer_user")
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser))
+      } catch (error) {
+        console.error("Failed to parse stored user:", error)
       }
-      setIsLoading(false)
     }
-
-    checkAuthStatus()
-
-    // Check token validity every 5 minutes
-    const interval = setInterval(async () => {
-      if (user) {
-        try {
-          await cognitoAuth.getCurrentUser()
-        } catch (error) {
-          console.log("Token expired during session, logging out")
-          showToast.error("Session expired. Please log in again.")
-          await logout()
-        }
-      }
-    }, 5 * 60 * 1000) // 5 minutes
-
-    return () => clearInterval(interval)
-  }, [user])
+    setIsLoading(false)
+  }, [])
 
   const login = async (email: string, password: string, role: UserRole) => {
     setIsLoading(true)
