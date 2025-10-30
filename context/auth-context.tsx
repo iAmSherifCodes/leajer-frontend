@@ -6,6 +6,7 @@ import type { User, AuthContextType, UserRole, Permission } from "@/types"
 import { rolePermissions } from "@/types"
 import { showToast } from '@/lib/toast'
 import { cognitoAuth } from '@/lib/cognito'
+import { jwtDecode } from 'jwt-decode';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
@@ -36,24 +37,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (!cognitoUser) {
         throw new Error("Failed to retrieve user after login")
       }
-      
-      if (!result.isSignedIn){
+
+      if (!result.isSignedIn) {
         throw new Error("Login failed")
       }
-      const username = cognitoUser.signInDetails?.loginId?.split('@')[0] || email.split('@')[0]
-      
+      // Decode JWT idToken to get user's registered name
+      let userName = email.split('@')[0] // fallback
+      if (session?.tokens?.idToken) {
+        try {
+          const idTokenString = session.tokens.idToken.toString()
+          const payload = jwtDecode<{ name?: string }>(idTokenString)
+
+          userName = payload?.name? payload.name : userName
+          localStorage.setItem('leajer_token', idTokenString)
+        } catch (error) {
+          console.error('Failed to decode JWT:', error)
+        }
+      }
+
       // Get actual role from Cognito groups
       const actualRole = await cognitoAuth.getUserRole(email)
 
       const user: User = {
         id: cognitoUser.userId,
-        name: username,
+        name: userName,
         email,
         role: actualRole
-      }
-      // Store the token for API requests
-      if (session?.tokens?.idToken) {
-        localStorage.setItem('leajer_token', session.tokens.idToken.toString())
       }
 
       setUser(user)
